@@ -17,15 +17,15 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Article implements Serializable{
+public class Badge implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
-	
 	private String label;
-	private Date date;
+	private Date dateOwned;
+
 	@Enumerated(EnumType.STRING)
-	private Theme theme;
+	private BadgeType type;
 	@ManyToOne()
 	private User user;
 }
