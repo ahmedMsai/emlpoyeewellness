@@ -1,7 +1,7 @@
 package tn.esprit.wellness.entity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,9 +20,11 @@ public class Comment implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	private String content;
-	private Date date;
+	private LocalDateTime date;
+	private int nbLike;
 	@ManyToOne()
 	private User user;
 	@ManyToOne()
 	private Post post;
+	
 }

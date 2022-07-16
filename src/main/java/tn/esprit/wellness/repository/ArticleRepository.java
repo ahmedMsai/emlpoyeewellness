@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import tn.esprit.wellness.entity.Article;
 
 @Repository
-public interface ArticleRepository extends JpaRepository<Article , Integer >{
-	@Query("SELECT p FROM Article p WHERE p.id=:id LIMIT 1")
-	public Article findById(@Param("id")String id);
+public interface ArticleRepository extends JpaRepository<Article , Integer>{
+	
 }
