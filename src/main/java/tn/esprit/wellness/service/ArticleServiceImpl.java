@@ -34,13 +34,13 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
-	public Optional<Article> getArticleById(Article article) {
-		return articleRepository.findById(article.getId());	
+	public List<Article> getAllArticles() {
+		return articleRepository.findAll();
 	}
 
 	@Override
-	public List<Article> getAllArticles() {
-		return articleRepository.findAll();
+	public Article getArticleById(int id) {
+		return articleRepository.findById(id).get();	
 	}
 
 }

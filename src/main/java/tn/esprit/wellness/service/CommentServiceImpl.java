@@ -1,6 +1,7 @@
 package tn.esprit.wellness.service;
 
 import java.time.LocalDateTime;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpHeaders;
+import org.springframework.stereotype.Service;
 
 import tn.esprit.wellness.entity.Comment;
 import tn.esprit.wellness.entity.utils.PagingComment;
@@ -18,6 +20,7 @@ import tn.esprit.wellness.entity.utils.PagingHeaders;
 import tn.esprit.wellness.repository.ArticleRepository;
 import tn.esprit.wellness.repository.CommentRepository;
 
+@Service
 public class CommentServiceImpl implements CommentService{
 	@Autowired
 	CommentRepository commentRepository ;

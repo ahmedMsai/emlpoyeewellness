@@ -9,6 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import tn.esprit.wellness.entity.Article;
+
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,6 +28,5 @@ public class Comment implements Serializable {
 	@ManyToOne()
 	private User user;
 	@ManyToOne()
-	private Post post;
-	
+	private Article article;
 }
