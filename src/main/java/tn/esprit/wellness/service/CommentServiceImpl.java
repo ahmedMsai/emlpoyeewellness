@@ -17,8 +17,14 @@ import org.springframework.stereotype.Service;
 import tn.esprit.wellness.entity.Comment;
 import tn.esprit.wellness.entity.utils.PagingComment;
 import tn.esprit.wellness.entity.utils.PagingHeaders;
+import tn.esprit.wellness.payload.CommentPayload;
 import tn.esprit.wellness.repository.ArticleRepository;
 import tn.esprit.wellness.repository.CommentRepository;
+
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Service
 public class CommentServiceImpl implements CommentService{
@@ -71,57 +77,44 @@ public class CommentServiceImpl implements CommentService{
 			comment.setNbLike(comment.getNbLike()-1);
 		return commentRepository.save(comment);
 	}
-	
-	/**
-     * get element using Criteria.
-     *
-     * @param spec    *
-     * @param headers pagination data
-     * @param sort    sort criteria
-     * @return retrieve elements with pagination
-     */
-	@Override
-    public PagingComment get(Specification<Comment> spec, HttpHeaders headers, Sort sort) {
-        if (isRequestPaged(headers)) {
-            return get(spec, buildPageRequest(headers, sort));
-        } else {
-            final List<Comment> entities = get(spec, sort);
-            return new PagingComment((long) entities.size(), 0L, 0L, 0L, 0L, entities);
-        }
-    }
-    
-    private boolean isRequestPaged(HttpHeaders headers) {
-        return headers.containsKey(PagingHeaders.PAGE_NUMBER.getName()) && headers.containsKey(PagingHeaders.PAGE_SIZE.getName());
-    }
 
-    private Pageable buildPageRequest(HttpHeaders headers, Sort sort) {
-        int page = Integer.parseInt(Objects.requireNonNull(headers.get(PagingHeaders.PAGE_NUMBER.getName())).get(0));
-        int size = Integer.parseInt(Objects.requireNonNull(headers.get(PagingHeaders.PAGE_SIZE.getName())).get(0));
-        return PageRequest.of(page, size, sort);
-    }
-    
-    /**
-     * get elements using Criteria.
-     *
-     * @param spec *
-     * @return elements
-     */
-    public List<Comment> get(Specification<Comment> spec, Sort sort) {
-        return commentRepository.findAll(spec, sort);
-    }
-    
-    /**
-     * get elements using Criteria.
-     *
-     * @param spec     *
-     * @param pageable pagination data
-     * @return retrieve elements with pagination
-     */
-    public PagingComment get(Specification<Comment> spec, Pageable pageable) {
-        Page<Comment> page = commentRepository.findAll(spec, pageable);
-        List<Comment> content = page.getContent();
-        return new PagingComment(page.getTotalElements(), (long) page.getNumber(), (long) page.getNumberOfElements(), pageable.getOffset(), (long) page.getTotalPages(), content);
-    }
+	  
+	 @Override
+	    public CommentPayload getAllPosts(int pageNo, int pageSize, String sortBy, String sortDir) {
+
+		 Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+	                : Sort.by(sortBy).descending();
+	               
+
+	        Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
+
+	        Page<Comment> comments = commentRepository.findAll(pageable);
+
+	        // get content for page object
+	        List<Comment> listOfPosts = comments.getContent();
+
+	        List<Comment> content = listOfPosts.stream().collect(Collectors.toList());
+
+	        CommentPayload commentPayload = new CommentPayload();
+	        commentPayload.setContent(content);
+	        commentPayload.setPageNo(comments.getNumber());
+	        commentPayload.setPageSize(comments.getSize());
+	        commentPayload.setTotalElements(comments.getTotalElements());
+	        commentPayload.setTotalPages(comments.getTotalPages());
+	        commentPayload.setLast(comments.isLast());
+
+	        return commentPayload;
+	    }
+
+	@Override
+	public Comment createComment(Comment comment) {
+        // convert DTO to entity
+       
+        Comment newComment = commentRepository.save(comment);
+
+        return newComment;
+	}
+	
 
 
 }

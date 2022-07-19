@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import tn.esprit.wellness.entity.Article;
 
 
@@ -26,7 +28,9 @@ public class Comment implements Serializable {
 	private LocalDateTime date;
 	private int nbLike;
 	@ManyToOne()
+	@JsonIgnore
 	private User user;
 	@ManyToOne()
+	@JsonIgnore
 	private Article article;
 }
