@@ -29,11 +29,7 @@ import static tn.esprit.wellness.Constants.*;
 import static tn.esprit.wellness.util.Constants.REQUEST_TOKEN_URL;
 import static tn.esprit.wellness.util.Constants.TOKEN_INTROSPECTION_URL;
 
-
-/*
- * Getting Started with LinkedIn's OAuth APIs ,
- * Documentation: https://docs.microsoft.com/en-us/linkedin/shared/authentication/authentication?context=linkedin/context
- */
+@RequestMapping("/api/linkedin")
 @RestController
 public final class LinkedInOAuthController {
 
@@ -46,8 +42,6 @@ public final class LinkedInOAuthController {
     }
 
 
-
-    //Define all inputs in the property file
     private Properties prop = new Properties();
     private String propFileName = "config.properties";
     public static String token = null;
@@ -56,22 +50,15 @@ public final class LinkedInOAuthController {
 
     private Logger logger = Logger.getLogger(LinkedInOAuthController.class.getName());
 
-    /**
-     * Make a Login request with LinkedIN Oauth API
-     *
-     * @param code optional Authorization code
-     * @return Redirects to the client UI after successful token creation
-     */
     @RequestMapping(value = "/login")
     public RedirectView oauth(@RequestParam(name = "code", required = false) final String code) throws Exception {
 
         loadProperty();
 
-        // Construct the LinkedInOAuthService instance for use
         service = new LinkedInOAuthService.LinkedInOAuthServiceBuilder()
                 .apiKey(prop.getProperty("clientId"))
                 .apiSecret(prop.getProperty("clientSecret"))
-                .defaultScope(new ScopeBuilder(prop.getProperty("scope").split(",")).build()) // replace with desired scope
+                .defaultScope(new ScopeBuilder(prop.getProperty("scope").split(",")).build())
                 .callback(prop.getProperty("redirectUri"))
                 .build();
 
@@ -114,13 +101,6 @@ public final class LinkedInOAuthController {
         return redirectView;
     }
 
-
-    /**
-     * Make a Token Introspection request with LinkedIN API
-     *
-     * @return check the Time to Live (TTL) and status (active/expired) for all token
-     */
-
     @RequestMapping(value = "/tokenIntrospection")
     public String token_introspection() throws Exception {
         if (service != null) {
@@ -135,12 +115,6 @@ public final class LinkedInOAuthController {
     }
 
 
-    /**
-     * Make a Refresh Token request with LinkedIN API
-     *
-     * @return get a new access token when your current access token expire
-     */
-
     @RequestMapping(value = "/refreshToken")
     public String refresh_token() throws IOException {
         HttpEntity request = service.getAccessTokenFromRefreshToken(refresh_token);
@@ -148,12 +122,6 @@ public final class LinkedInOAuthController {
         logger.log(Level.INFO, "Used Refresh Token to generate a new access token successfully.");
         return response;
     }
-
-    /**
-     * Make a Public profile request with LinkedIN API
-     *
-     * @return Public profile of user
-     */
 
     @RequestMapping(value = "/profile")
     public String profile() {
