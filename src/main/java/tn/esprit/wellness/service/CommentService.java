@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 
 import tn.esprit.wellness.entity.Comment;
 import tn.esprit.wellness.entity.utils.PagingComment;
+import tn.esprit.wellness.payload.CommentPayload;
 
 
 public interface CommentService {
@@ -19,6 +20,9 @@ public interface CommentService {
 	Comment updateComment(Comment comment);
 	Comment retrieveCommentById(int id);
 	Comment increLike(int id, boolean b);
-	PagingComment get(Specification<Comment> spec, HttpHeaders headers, Sort sort);
+	CommentPayload getAllPosts(int pageNo, int pageSize, String sortBy, String sortDir);
+//    Comment createPost(PostDto postDto);
+	//PagingComment get(Specification<Comment> spec, HttpHeaders headers, Sort sort);
+	Comment createComment(Comment comment);
 
 }
