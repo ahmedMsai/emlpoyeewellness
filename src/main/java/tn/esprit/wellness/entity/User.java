@@ -32,6 +32,8 @@ public class User implements Serializable {
 	private String name;
 	private String lastname;
 	private Date birthday;
+	@Enumerated(EnumType.STRING)
+	private Genre genre;
 
 	@Column(unique = true)
 	@Pattern(regexp = ".+[@].+[\\.].+")
@@ -41,6 +43,8 @@ public class User implements Serializable {
 	private String department;
 	@Enumerated(EnumType.STRING)
 	private Role role;
+	
+	
 
 	@OneToMany
 	private List<Article> articles = new ArrayList<>();
@@ -60,7 +64,7 @@ public class User implements Serializable {
 	@OneToMany
 	private List<Comment> comments = new ArrayList<>();
 
-	@ManyToMany
+    @ManyToMany
 	@JoinTable(name = "participation", joinColumns = @JoinColumn(name = "idUser"), inverseJoinColumns = @JoinColumn(name = "idEvent"))
 	private List<Event> eventss = new ArrayList<>();
 
@@ -69,7 +73,7 @@ public class User implements Serializable {
 	private List<Event> eventsss = new ArrayList<>();
 
 	@ManyToMany
-	@JoinTable(name = "note_commentaire", joinColumns = @JoinColumn(name = "idUser"), inverseJoinColumns = @JoinColumn(name = "idEvent"))
+	@JoinTable(name = "notecommentaire", joinColumns = @JoinColumn(name = "idUser"), inverseJoinColumns = @JoinColumn(name = "idEvent"))
 	private List<Event> eventssss = new ArrayList<>();
 
 }

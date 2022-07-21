@@ -1,5 +1,8 @@
 package tn.esprit.wellness.services;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import tn.esprit.wellness.entity.Event;
+import tn.esprit.wellness.entity.Theme;
 import tn.esprit.wellness.repository.EventRepository;
 
 @Service
@@ -100,6 +104,7 @@ public class EventServiceImpl implements IEventService {
 
 			Event event = eventRepository.findById(eventId).orElse(null);
 			if (event != null) {
+
 				event.setDate(date);
 				eventRepository.save(event);
 			}
@@ -123,6 +128,90 @@ public class EventServiceImpl implements IEventService {
 	public void inviteCoworkerForEvent(int userId, int eventId) {
 		try {
 			eventRepository.inviteCoworker(userId, eventId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	public void inviteCoworkers(int eventId) {
+		try {
+			// récupérer le thème de l'evt
+			String t = eventRepository.getThemeFromEvt(eventId);
+			if (Theme.SPORT_HOMME.toString().equalsIgnoreCase(t)) {
+				// récupérer la lise des ids des users du genre homme
+				int[] hommes = eventRepository.getMenUsers();
+
+				for (int i = 0; i < hommes.length; i++) {
+					eventRepository.inviteCoworker(hommes[i], eventId);
+					System.out.println(hommes[i]);
+
+				}
+
+			} else if (Theme.SPORT_FEMME.toString().equalsIgnoreCase(t)) {
+				// récupérer la lise des ids des users du genre homme
+				int[] femmes = eventRepository.getWomenUsers();
+
+				for (int i = 0; i < femmes.length; i++) {
+					eventRepository.inviteCoworker(femmes[i], eventId);
+					System.out.println(femmes[i]);
+
+				}
+
+			} else {
+				
+				// all users
+				int[] allUsers = eventRepository.getAllUsers();
+				for (int i = 0; i < allUsers.length; i++) {
+					eventRepository.inviteCoworker(allUsers[i], eventId);
+					System.out.println(allUsers[i]);
+
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	public void inviteCoworkersFromDepartment(int eventId, String depId) {
+		try {
+			// récupérer le thème de l'evt
+			String t = eventRepository.getThemeFromEvt(eventId);
+			if (Theme.SPORT_HOMME.toString().equalsIgnoreCase(t)) {
+				// récupérer la lise des ids des users du genre homme du departement
+				int[] hommes = eventRepository.getMenUsersFromDepartment(depId);
+
+				for (int i = 0; i < hommes.length; i++) {
+					eventRepository.inviteCoworker(hommes[i], eventId);
+					System.out.println(hommes[i]);
+
+				}
+
+			} else if (Theme.SPORT_FEMME.toString().equalsIgnoreCase(t)) {
+				// récupérer la lise des ids des users du genre homme du departement
+				int[] femmes = eventRepository.getWomenUsersFromDepartment(depId);
+
+				for (int i = 0; i < femmes.length; i++) {
+					eventRepository.inviteCoworker(femmes[i], eventId);
+					System.out.println(femmes[i]);
+
+				}
+
+			} else {
+				// all users du departement
+				int[] allUsers = eventRepository.getAllUsersFromDepartment(depId);
+				for (int i = 0; i < allUsers.length; i++) {
+					eventRepository.inviteCoworker(allUsers[i], eventId);
+					System.out.println(allUsers[i]);
+
+				}
+			}
+
+			// eventRepository.inviteCoworker(userId, eventId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -154,11 +243,22 @@ public class EventServiceImpl implements IEventService {
 	@Override
 	public void noteCommentaire(int userId, int eventId, String commentaire, int note, Date date) {
 		try {
+
 			eventRepository.noteCommentaire(userId, eventId, commentaire, note, date);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
+	}
+
+	@Override
+	public void generateStat() {
+		Theme[] t = Theme.values();
+		for (int i = 0; i < t.length; i++) {
+			eventRepository.generateStat(t[i].toString());
+			System.out.println(t[i].toString());
+
+		}
 	}
 }

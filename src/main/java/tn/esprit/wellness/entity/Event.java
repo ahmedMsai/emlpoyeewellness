@@ -19,6 +19,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Event implements Serializable {
 	@Id
@@ -42,7 +44,7 @@ public class Event implements Serializable {
 	private List<User> userss = new ArrayList<>();
 
 	@ManyToMany
-	@JoinTable(name = "note_commentaire", joinColumns = @JoinColumn(name = "idEvent"), inverseJoinColumns = @JoinColumn(name = "idUser"))
+	@JoinTable(name = "notecommentaire", joinColumns = @JoinColumn(name = "idEvent"), inverseJoinColumns = @JoinColumn(name = "idUser"))
 	private List<User> usersss = new ArrayList<>();
 
 	public Event() {
@@ -109,7 +111,7 @@ public class Event implements Serializable {
 	public void setReservations(List<Reservation> reservations) {
 		this.reservations = reservations;
 	}
-
+	@JsonIgnore
 	public User getUser() {
 		return user;
 	}

@@ -27,11 +27,17 @@ public interface IEventService {
 	public void participateEvent(int userId, int eventId);
 
 	public void inviteCoworkerForEvent(int userId, int eventId);
+	
+	public void inviteCoworkers(int eventId);
+	
+	public void inviteCoworkersFromDepartment(int eventId, String depId);
 
 	public void acceptInvitation(int userId, int eventId);
 
 	public void refuseInvitation(int userId, int eventId);
 
 	public void noteCommentaire(int userId, int eventId, String commentaire, int note, Date date);
+	
+	public void generateStat();
 
 }

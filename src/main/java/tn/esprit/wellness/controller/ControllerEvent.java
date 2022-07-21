@@ -1,7 +1,9 @@
 package tn.esprit.wellness.controller;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import tn.esprit.wellness.entity.Event;
 import tn.esprit.wellness.services.IEventService;
@@ -54,7 +58,7 @@ public class ControllerEvent {
 
 		return ieventService.getAllEvents();
 	}
-
+	
 	// http://localhost:8081/SpringMVC/servlet/getEventById/2
 	@GetMapping(value = "getEventById/{idevent}")
 	@ResponseBody
@@ -101,7 +105,9 @@ public class ControllerEvent {
 	// http://localhost:8081/SpringMVC/servlet/updateEventDate/2/newDate
 	@PutMapping(value = "/updateEventDate/{idEvent}/{newDate}")
 	@ResponseBody
-	public void updateDateEvent(@PathVariable("newDate") Date date, @PathVariable("idEvent") int eventId) {
+	public void updateDateEvent(
+			@PathVariable("newDate") @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZZZZ") Date date,
+			@PathVariable("idEvent") int eventId) {
 		ieventService.updateDateEvent(date, eventId);
 
 	}
@@ -116,13 +122,33 @@ public class ControllerEvent {
 
 	}
 
-	// invite coworker for event
+	// invite 1 coworker for event
 	// http://localhost:8081/SpringMVC/servlet/invite/1/2
 	@PostMapping("/invite/{idUser}/{idEvent}")
 	@ResponseBody
 	public void inviteCoworkerForEvent(@PathVariable("idUser") int userId, @PathVariable("idEvent") int eventId) {
 
 		ieventService.inviteCoworkerForEvent(userId, eventId);
+
+	}
+
+	// invite many coworkers for event
+	// http://localhost:8081/SpringMVC/servlet/inviteCoworkers/2
+	@PostMapping("/inviteCoworkers/{idEvent}")
+	@ResponseBody
+	public void inviteCoworkers(@PathVariable("idEvent") int eventId) {
+
+		ieventService.inviteCoworkers(eventId);
+
+	}
+
+	// invite many coworkers for event
+	// http://localhost:8081/SpringMVC/servlet/inviteCoworkersFromDepartement/2/d1
+	@PostMapping("/inviteCoworkersFromDepartement/{idEvent}/{idDep}")
+	@ResponseBody
+	public void inviteCoworkersFromDepartement(@PathVariable("idEvent") int eventId,@PathVariable("idDep") String depId) {
+
+		ieventService.inviteCoworkersFromDepartment(eventId, depId);
 
 	}
 
@@ -134,7 +160,7 @@ public class ControllerEvent {
 		ieventService.acceptInvitation(userId, eventId);
 
 	}
-	
+
 	// refuse invitation for an event :
 	// http://localhost:8081/SpringMVC/servlet/refuseInvitation/1/2
 	@PutMapping(value = "/refuseInvitation/{idUser}/{idEvent}")
@@ -143,14 +169,29 @@ public class ControllerEvent {
 		ieventService.refuseInvitation(userId, eventId);
 
 	}
-	
+
 	// note and comment an event
-	// http://localhost:8081/SpringMVC/servlet/notecommentaire/1/2/...
-	@PostMapping("/noteCommentaire/{idUser}/{idEvent}")
+
+	// http://localhost:8081/SpringMVC/servlet/noteCommentaire/1/2/Good !/4 ...
+	@PostMapping("/noteCommentaire/{idUser}/{idEvent}/{commentaire}/{note}")
 	@ResponseBody
-	public void notecommentaire(@PathVariable("idUser") int userId, @PathVariable("idEvent") int eventId, @PathVariable("commentaire") String commentaire, @PathVariable("note") int note, @PathVariable("date") Date date) {
+	public void notecommentaire(@PathVariable("idUser") int userId, @PathVariable("idEvent") int eventId,
+			@PathVariable("commentaire") String commentaire, @PathVariable("note") int note) {
+
+		Calendar calendar = Calendar.getInstance();
+
+		Date date = calendar.getTime();
+		date.setHours(date.getHours() + 1);
 
 		ieventService.noteCommentaire(userId, eventId, commentaire, note, date);
+
+	}
+
+	// http://localhost:8081/SpringMVC/servlet/generateStat
+	@PutMapping(value = "/generateStat")
+	@ResponseBody
+	public void generateStat() {
+		ieventService.generateStat();
 
 	}
 }
