@@ -69,9 +69,6 @@ public class User {
   private List<Collaboration> collaborations = new ArrayList<>();
   @OneToMany(mappedBy="user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
           fetch=FetchType.LAZY)
-  private List<Post> publications = new ArrayList<>();
-  @OneToMany(mappedBy="user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
-          fetch=FetchType.LAZY)
   private List<Comment> comments = new ArrayList<>();
 
   public User() {
