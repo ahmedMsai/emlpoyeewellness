@@ -31,7 +31,7 @@ public class User {
   private String department;
 
   @NotBlank
-  @Size(max = 20)
+  @Size(max = 50)
   private String username;
 
   @NotBlank
@@ -42,6 +42,8 @@ public class User {
   @NotBlank
   @Size(max = 120)
   private String password;
+
+  private String imgUrl;
 
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "user_roles", 
@@ -67,9 +69,6 @@ public class User {
   @OneToMany(mappedBy="user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
           fetch=FetchType.LAZY)
   private List<Collaboration> collaborations = new ArrayList<>();
-  @OneToMany(mappedBy="user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
-          fetch=FetchType.LAZY)
-  private List<Post> publications = new ArrayList<>();
   @OneToMany(mappedBy="user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
           fetch=FetchType.LAZY)
   private List<Comment> comments = new ArrayList<>();
