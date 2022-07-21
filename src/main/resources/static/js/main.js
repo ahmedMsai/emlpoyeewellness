@@ -16,19 +16,21 @@ var colors = [
     '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
 ];
 
-function connect(event) {
+function connect() {
     username = document.querySelector('#name').value.trim();
+    let pwd = document.querySelector('#pwd').value;
 
-    if(username) {
-        usernamePage.classList.add('hidden');
-        chatPage.classList.remove('hidden');
-
-        var socket = new SockJS('/ws');
-        stompClient = Stomp.over(socket);
-
-        stompClient.connect({}, onConnected, onError);
-    }
-    event.preventDefault();
+    var req = new XMLHttpRequest();
+	req.responseType = 'json';
+	req.open('POST', "/api/auth/signin");	
+	req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	req.onload  = function() {
+		var jsonResponse = req.response;
+		console.log(jsonResponse)
+   		location.reload(); 
+	};
+	let data = {username:username,password:pwd};
+	req.send(JSON.stringify(data));
 }
 
 
@@ -116,6 +118,41 @@ function getAvatarColor(messageSender) {
     var index = Math.abs(hash % colors.length);
     return colors[index];
 }
+function logout(){
+	var req = new XMLHttpRequest();
+	req.responseType = 'json';
+	req.open('GET', "/api/auth/signout", true);
+	req.onload  = function() {
+   		location.reload(); 
+	};
+	req.send(null);
+}
 
-usernameForm.addEventListener('submit', connect, true)
+
+document.addEventListener('DOMContentLoaded', function () {
+	
+	var req = new XMLHttpRequest();
+	req.responseType = 'json';
+	req.open('GET', "/api/auth/user/profile", true);
+	req.onload  = function() {
+   		var jsonResponse = req.response;
+   		console.log(jsonResponse["username"])
+   		username = jsonResponse["username"];
+
+		    if(username) {
+		        usernamePage.classList.add('hidden');
+		        chatPage.classList.remove('hidden');
+		
+		        var socket = new SockJS('/ws');
+		        stompClient = Stomp.over(socket);
+		
+		        stompClient.connect({}, onConnected, onError);
+		    }
+		    event.preventDefault();
+	};
+	req.send(null);
+   
+}, false);
+
+//usernameForm.addEventListener('submit', connect, true)
 messageForm.addEventListener('submit', sendMessage, true)
