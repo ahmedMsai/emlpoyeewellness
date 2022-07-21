@@ -7,6 +7,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+
+import java.io.Serializable;
 import java.util.*;
 
 @Entity
@@ -17,7 +19,7 @@ import java.util.*;
            @UniqueConstraint(columnNames = "username"),
            @UniqueConstraint(columnNames = "email")
        })
-public class User {
+public class User implements Serializable{
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -68,7 +70,7 @@ public class User {
   private List<Reservation> reservations = new ArrayList<>();
   @OneToMany(mappedBy="user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
           fetch=FetchType.LAZY)
-  private List<Collaboration> collaborations = new ArrayList<>();
+  private List<Collaborator> collaborations = new ArrayList<>();
   @OneToMany(mappedBy="user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
           fetch=FetchType.LAZY)
   private List<Comment> comments = new ArrayList<>();

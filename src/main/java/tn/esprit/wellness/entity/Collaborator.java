@@ -14,13 +14,11 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Collaboration implements Serializable {
+public class Collaborator implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	private String label;
-	@ManyToOne()
-	private User user;
 	@ManyToOne()
 	private Offer offer;
 

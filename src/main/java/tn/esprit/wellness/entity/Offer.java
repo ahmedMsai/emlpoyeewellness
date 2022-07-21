@@ -25,5 +25,5 @@ public class Offer implements Serializable {
 	private String label;
 	@OneToMany(mappedBy="offer", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, 
 			fetch=FetchType.LAZY)
-	private List<Collaboration> collaborations = new ArrayList<>();
+	private List<Collaborator> collaborators = new ArrayList<>();
 }
