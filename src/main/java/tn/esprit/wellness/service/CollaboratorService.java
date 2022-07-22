@@ -16,33 +16,28 @@ public class CollaboratorService implements ICollaboratorService{
 	
 
 	@Override
-	public List<Collaborator> getAllCollaborations() {
-		// TODO Auto-generated method stub
-		//return collaboratorRepository.;
+	public List<Collaborator> getAllCollaborators() {
+		return collaboratorRepository.findAll();
 	}
 
 	@Override
-	public int addCollaboration(Collaborator collaboration) {
-		// TODO Auto-generated method stub
-		return 0;
+	public Collaborator addCollaborator(Collaborator collaborator) {
+		return collaboratorRepository.save(collaborator);
 	}
 
 	@Override
-	public void deleteCollaborationById(int id) {
-		// TODO Auto-generated method stub
-		
+	public void deleteCollaboratorById(int id) {
+		collaboratorRepository.deleteById(id);
 	}
 
 	@Override
-	public Collaborator updateCollaboration(Collaborator collaboration) {
-		// TODO Auto-generated method stub
-		return null;
+	public Collaborator updateCollaborator(Collaborator collaborator) {
+		return collaboratorRepository.save(collaborator);
 	}
 
 	@Override
 	public Collaborator getCollaboratorById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return collaboratorRepository.findById(id).get();
 	}
 
 }

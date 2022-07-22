@@ -8,6 +8,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -27,9 +29,9 @@ public class User implements Serializable{
   private String name;
 
   private String lastname;
-
+  @JsonIgnore
   private Date birthday;
-
+  @JsonIgnore
   private String department;
 
   @NotBlank
@@ -40,40 +42,42 @@ public class User implements Serializable{
   @Size(max = 50)
   @Email
   private String email;
-
+  @JsonIgnore
   @NotBlank
   @Size(max = 120)
   private String password;
-
+  @JsonIgnore
   private String imgUrl;
-
+  @JsonIgnore
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "user_roles", 
              joinColumns = @JoinColumn(name = "user_id"),
              inverseJoinColumns = @JoinColumn(name = "role_id"))
   private Set<Role> roles = new HashSet<>();
-
+  @JsonIgnore
   @OneToMany(mappedBy="user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
           fetch=FetchType.LAZY)
   private List<Article> articles = new ArrayList<>();
-
+  @JsonIgnore
   @OneToMany(mappedBy="user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
           fetch=FetchType.LAZY)
   private List<Event> events = new ArrayList<>();
-
+  @JsonIgnore
   @OneToMany(mappedBy="user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
           fetch=FetchType.LAZY)
   private List<Badge> badges = new ArrayList<>();
-
+  @JsonIgnore
   @OneToMany(mappedBy="user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
           fetch=FetchType.LAZY)
   private List<Reservation> reservations = new ArrayList<>();
-  @OneToMany(mappedBy="user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
-          fetch=FetchType.LAZY)
-  private List<Collaborator> collaborations = new ArrayList<>();
+  @JsonIgnore
   @OneToMany(mappedBy="user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
           fetch=FetchType.LAZY)
   private List<Comment> comments = new ArrayList<>();
+  @JsonIgnore
+  @OneToMany(mappedBy="user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+          fetch=FetchType.LAZY)
+  private List<CollabRating> collabRatings = new ArrayList<>();
 
   public User() {
   }
