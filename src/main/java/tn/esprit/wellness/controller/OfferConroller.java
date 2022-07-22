@@ -20,6 +20,7 @@ import tn.esprit.wellness.service.OfferService;
 
 @RestController
 @RequestMapping(value = "/api/auth/offer")
+@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 public class OfferConroller {
 	@Autowired
 	private OfferService offerService;

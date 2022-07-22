@@ -27,6 +27,7 @@ import tn.esprit.wellness.service.IUserService;
 
 @RestController
 @RequestMapping(value = "/api/auth/collabRating")
+@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 public class CollabRatingController {
 
 	@Autowired
