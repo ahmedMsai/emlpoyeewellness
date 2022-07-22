@@ -1,10 +1,18 @@
 package tn.esprit.wellness.util;
 
 public final class Constants {
+    // Replace with your email here:
+    public static final String MY_EMAIL = "dragunovcsgo@gmail.com";
+
+    // Replace password!!
+    public static final String MY_PASSWORD = "dpslgkehyjphwozk";
+    
+
+    // And receiver!
+    public static final String FRIEND_EMAIL = "dragunovcsgo@gmail.com";
 
     private Constants() {
-        //private utility class constructor to forbid instantiation
-    }
+        }
 
     public static final String AUTHORIZE_URL = "https://www.linkedin.com/oauth/v2/authorization";
 
@@ -29,6 +37,8 @@ public final class Constants {
     public static final int RESPONSE_CODE = 200;
 
     public static final int PORT = 8000;
+
+
 
     public enum GrantType {
         CLIENT_CREDENTIALS("client_credentials"), AUTHORIZATION_CODE("authorization_code"), REFRESH_TOKEN("refresh_token");

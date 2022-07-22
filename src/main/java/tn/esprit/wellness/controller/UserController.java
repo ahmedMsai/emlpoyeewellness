@@ -3,6 +3,7 @@ package tn.esprit.wellness.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -11,11 +12,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import tn.esprit.wellness.entity.Article;
+
 import tn.esprit.wellness.entity.User;
 import tn.esprit.wellness.payload.response.UserInfoResponse;
 import tn.esprit.wellness.security.services.UserDetailsImpl;
@@ -43,4 +46,5 @@ public class UserController  {
                 userDetails.getEmail(),
                 roles));
 	}
+
 }
